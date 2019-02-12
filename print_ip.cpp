@@ -19,7 +19,7 @@ void print_ip(T ip)
     short r_shift = n * 8 - 8, l_shift = 0;
     if (n == 1)
         std::cout << (unsigned)out;
-    else
+    else {
         for (size_t i = 0; i < n; ++i){
             out = ip << l_shift;
             out = out >> r_shift;
@@ -28,7 +28,8 @@ void print_ip(T ip)
             std::cout << out;
             l_shift += 8;
         }
-        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 void print_ip(std::string ip)
