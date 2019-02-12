@@ -46,11 +46,5 @@ int main(){
     long d = 8875824491850138409;
     print_ip(d);
 
-    // std::string e = "127.0.0.1";
-    // print_ip(e);
-
-    // std::vector<int> i({127,0,0,4});
-    // print_ip(i);
-
     return 0;
 }
