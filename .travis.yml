@@ -20,6 +20,7 @@ install:
 - make
 - sudo make install
 - cd $TRAVIS_BUILD_DIR
+- sudo apt-get install graphviz
 
 script:
 - doxygen Doxyfile
