@@ -1,0 +1,42 @@
+language: cpp
+
+before_script:
+- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+- sudo apt-get update -qq
+
+before_install:
+- sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+- sudo apt-get update -qq
+
+install:
+- sudo apt-get install -qq g++-6
+- sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+- sudo apt-get install cmake
+- git clone https://github.com/doxygen/doxygen.git
+- cd doxygen
+- mkdir build
+- cd build
+- cmake -G "Unix Makefiles" ..
+- make
+- sudo make install
+- cd $TRAVIS_BUILD_DIR
+- sudo apt-get install graphviz
+
+script:
+- doxygen Doxyfile
+- cmake .
+- cmake --build .
+- cmake --build . --target package
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -T print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -udr-ak:$BINTRAY_API_KEY "https://api.bintray.com/content/dr-ak/print_ip/print_ip/$TRAVIS_BUILD_NUMBER/print_ip-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: master
